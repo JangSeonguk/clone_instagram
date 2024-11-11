@@ -1,5 +1,8 @@
+import 'package:baby_stamp/widget/comment.dart';
+import 'package:baby_stamp/widget/rounded_avatar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:baby_stamp/constants/common_size.dart';
 
 class Post extends StatelessWidget {
   final int index;
@@ -8,28 +11,80 @@ class Post extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _postHeader(),
         _postImage(),
+        _postActions(),
+        _postLikes(),
+        _postCaption(),
+      ],
+    );
+  }
+
+  Widget _postCaption() {
+    return const Padding(
+      padding:
+          EdgeInsets.symmetric(horizontal: commonGap, vertical: commonXxsGap),
+      child: Comment(
+        showImage: false,
+        username: 'testingUser',
+        text: 'I have money!!',
+      ),
+    );
+  }
+
+  Padding _postLikes() {
+    return const Padding(
+      padding: EdgeInsets.only(left: commonGap),
+      child: Text(
+        "12000 likes",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Row _postActions() {
+    return const Row(
+      children: [
+        IconButton(
+            onPressed: null,
+            icon: Icon(
+              Icons.bookmark,
+              color: Colors.black87,
+            )),
+        IconButton(
+            onPressed: null,
+            icon: Icon(
+              Icons.comment,
+              color: Colors.black87,
+            )),
+        IconButton(
+            onPressed: null,
+            icon: Icon(
+              Icons.send,
+              color: Colors.black87,
+            )),
+        Spacer(),
+        IconButton(
+            onPressed: null,
+            icon: Icon(
+              Icons.favorite,
+              color: Colors.black87,
+            )),
       ],
     );
   }
 
   Widget _postHeader() {
-    return Row(
+    return const Row(
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ClipOval(
-            child: CachedNetworkImage(
-              imageUrl: "https://picsum.photos/100",
-              width: 30,
-              height: 30,
-            ),
-          ),
+          padding: EdgeInsets.all(commonXxsGap),
+          child: RoundedAvatar(),
         ),
-        const Expanded(child: Text("username")),
-        const IconButton(
+        Expanded(child: Text("username")),
+        IconButton(
             onPressed: null,
             icon: Icon(
               Icons.more_horiz,

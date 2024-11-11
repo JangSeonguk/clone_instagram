@@ -1,4 +1,6 @@
 import 'package:baby_stamp/screen/feed_screen.dart';
+import 'package:baby_stamp/screen/profile_screen.dart';
+import 'package:baby_stamp/constants/screen_size.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -31,13 +33,12 @@ class _HomeScreenState extends State<HomeScreen> {
     Container(
       color: Colors.grey,
     ),
-    Container(
-      color: Colors.greenAccent,
-    ),
+    const ProfileScreen()
   ];
 
   @override
   Widget build(BuildContext context) {
+    screenSize = MediaQuery.of(context).size;
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           items: btmNavItems,
