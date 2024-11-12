@@ -1,11 +1,13 @@
 import 'package:baby_stamp/constants/common_size.dart';
 import 'package:baby_stamp/constants/screen_size.dart';
+import 'package:baby_stamp/screen/profile_screen.dart';
 import 'package:baby_stamp/widget/rounded_avatar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProfileBody extends StatefulWidget {
-  const ProfileBody({super.key});
+  final Function onMenuChanged;
+  const ProfileBody({super.key, required this.onMenuChanged});
 
   @override
   State<ProfileBody> createState() => _ProfileBodyState();
@@ -18,49 +20,82 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: CustomScrollView(
-        slivers: [
-          SliverList(
-              delegate: SliverChildListDelegate([
-            Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(commonGap),
-                  child: RoundedAvatar(
-                    size: 80,
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: commonGap),
-                    child: Table(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.grey[100],
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _appbar(),
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  SliverList(
+                      delegate: SliverChildListDelegate([
+                    Row(
                       children: [
-                        TableRow(children: [
-                          _valueText("122"),
-                          _valueText("122"),
-                          _valueText("122"),
-                        ]),
-                        TableRow(children: [
-                          _labelText("Post"),
-                          _labelText("Followers"),
-                          _labelText("Following"),
-                        ])
+                        const Padding(
+                          padding: EdgeInsets.all(commonGap),
+                          child: RoundedAvatar(
+                            size: 80,
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: commonGap),
+                            child: Table(
+                              children: [
+                                TableRow(children: [
+                                  _valueText("122"),
+                                  _valueText("122"),
+                                  _valueText("122"),
+                                ]),
+                                TableRow(children: [
+                                  _labelText("Post"),
+                                  _labelText("Followers"),
+                                  _labelText("Following"),
+                                ])
+                              ],
+                            ),
+                          ),
+                        )
                       ],
                     ),
-                  ),
-                )
-              ],
+                    _username(),
+                    _userBio(),
+                    _editProfileBtn(),
+                    _tabButtons(),
+                    _selectedIndicator(),
+                  ])),
+                  _imagesPager(),
+                ],
+              ),
             ),
-            _username(),
-            _userBio(),
-            _editProfileBtn(),
-            _tabButtons(),
-            _selectedIndicator(),
-          ])),
-          _imagesPager(),
-        ],
+          ],
+        ),
       ),
+    );
+  }
+
+  Row _appbar() {
+    return Row(
+      children: [
+        const SizedBox(
+          width: 44,
+        ),
+        const Expanded(
+            child: Text(
+          "Jang's gram",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 20),
+        )),
+        IconButton(
+          onPressed: () {
+            widget.onMenuChanged();
+          },
+          icon: const Icon(Icons.menu),
+        )
+      ],
     );
   }
 
@@ -80,13 +115,13 @@ class _ProfileBodyState extends State<ProfileBody> {
     return SliverToBoxAdapter(
       child: Stack(children: [
         AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: duration,
           transform: Matrix4.translationValues(_leftImagesPageMargin, 0, 0),
           curve: Curves.fastOutSlowIn,
           child: _images(0),
         ),
         AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: duration,
           transform: Matrix4.translationValues(_rightImagesPageMargin, 0, 0),
           curve: Curves.fastOutSlowIn,
           child: _images(30),
@@ -116,7 +151,7 @@ class _ProfileBodyState extends State<ProfileBody> {
           ? Alignment.centerLeft
           : Alignment.centerRight,
       curve: Curves.fastOutSlowIn,
-      duration: const Duration(milliseconds: 300),
+      duration: duration,
       child: Container(
         width: screenSize.width / 2,
         height: 3,
