@@ -3,7 +3,7 @@ import 'package:baby_stamp/widget/profile_body.dart';
 import 'package:baby_stamp/widget/profile_side_menu.dart';
 import 'package:flutter/material.dart';
 
-const duration = Duration(milliseconds: 1000);
+const duration = Duration(milliseconds: 300);
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -47,16 +47,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             });
           }),
         ),
-        Positioned(
-          top: 0,
-          bottom: 0,
-          width: screenSize.width / 2,
-          child: AnimatedContainer(
-              curve: Curves.fastOutSlowIn,
-              duration: duration,
-              transform: Matrix4.translationValues(menuXPos, 0, 0),
-              child: ProfileSideMenu(menuWidth: menuWidth)),
-        ),
+        AnimatedContainer(
+            curve: Curves.fastOutSlowIn,
+            duration: duration,
+            transform: Matrix4.translationValues(menuXPos, 0, 0),
+            child: ProfileSideMenu(menuWidth: menuWidth)),
       ]),
     );
   }

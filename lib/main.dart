@@ -1,3 +1,4 @@
+import 'package:baby_stamp/screen/auth_screen.dart';
 import 'package:baby_stamp/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -11,9 +12,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(colorSchemeSeed: Colors.white),
-      debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
-    );
+        theme: ThemeData(colorSchemeSeed: Colors.white),
+        debugShowCheckedModeBanner: false,
+        // home: const HomeScreen(),
+        home: const AuthScreen());
   }
 }
