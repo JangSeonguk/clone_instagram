@@ -1,3 +1,5 @@
+import 'package:baby_stamp/screen/auth_screen.dart';
+import 'package:baby_stamp/widget/sign_in_form.dart';
 import 'package:flutter/material.dart';
 
 class ProfileSideMenu extends StatelessWidget {
@@ -9,20 +11,24 @@ class ProfileSideMenu extends StatelessWidget {
     return SafeArea(
       child: SizedBox(
         width: menuWidth,
-        child: const Column(
+        child: Column(
           children: [
-            ListTile(
+            const ListTile(
               title: Text(
                 "Setting",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             ListTile(
-              leading: Icon(
+              onTap: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const AuthScreen()));
+              },
+              leading: const Icon(
                 Icons.logout,
                 color: Colors.black87,
               ),
-              title: Text("Sign Out"),
+              title: const Text("Sign Out"),
             )
           ],
         ),
