@@ -1,5 +1,7 @@
+import 'package:baby_stamp/constants/auth_input_decor.dart';
 import 'package:baby_stamp/constants/common_size.dart';
 import 'package:baby_stamp/screen/home_screen.dart';
+import 'package:baby_stamp/widget/or_devider.dart';
 import 'package:flutter/material.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -46,7 +48,7 @@ class _SignUpFormState extends State<SignUpForm> {
             const SizedBox(height: commonLargeGap),
             TextFormField(
               controller: _emailController,
-              decoration: _textInputDeco("Email"),
+              decoration: textInputDeco("Email"),
               validator: (text) {
                 if (text == null || text.isEmpty) {
                   return 'Please enter an email';
@@ -63,7 +65,7 @@ class _SignUpFormState extends State<SignUpForm> {
             TextFormField(
               obscureText: true,
               controller: _passwordController,
-              decoration: _textInputDeco("Password"),
+              decoration: textInputDeco("Password"),
               validator: (text) {
                 if (text == null || text.isEmpty) {
                   return 'Please enter a password';
@@ -80,7 +82,7 @@ class _SignUpFormState extends State<SignUpForm> {
             TextFormField(
                 obscureText: true,
                 controller: _confirmPasswordController,
-                decoration: _textInputDeco("Conform Password"),
+                decoration: textInputDeco("Conform Password"),
                 validator: (text) {
                   if (text == null || text.isEmpty) {
                     return 'Please confirm your password';
@@ -91,44 +93,21 @@ class _SignUpFormState extends State<SignUpForm> {
                   return null;
                 }),
             const SizedBox(
-              height: commonGap,
+              height: commonSmallGap,
             ),
-            ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const HomeScreen()));
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(commonSmallGap))),
-                child: const Text(
-                  "Join",
-                  style: TextStyle(color: Colors.white),
-                )),
-            Row(
-              children: [
-                Expanded(
-                    child: Container(
-                  margin: const EdgeInsets.only(left: 10, right: 20),
-                  child: const Divider(
-                    height: 50,
-                  ),
-                )),
-                Text(
-                  "OR",
-                  style: TextStyle(color: Colors.grey[500]),
-                ),
-                Expanded(
-                    child: Container(
-                  margin: const EdgeInsets.only(left: 20, right: 10),
-                  child: const Divider(
-                    height: 50,
-                  ),
-                )),
-              ],
+            _submitButton(context),
+            const SizedBox(
+              height: commonSmallGap,
+            ),
+            const OrDivider(),
+            ElevatedButton.icon(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                foregroundColor: Colors.blue,
+              ),
+              label: const Text("Login with Facebook"),
+              icon: const Icon(Icons.facebook),
             )
           ],
         ),
@@ -136,28 +115,21 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  InputDecoration _textInputDeco(String hint) {
-    return InputDecoration(
-      filled: true,
-      fillColor: Colors.grey[100],
-      hintText: hint,
-      hintStyle: const TextStyle(color: Colors.grey),
-      enabledBorder: _activeInputBorder(Colors.grey, 1),
-      errorBorder: _errorInputBorder(),
-      focusedBorder: _activeInputBorder(Colors.blueAccent, 3),
-      focusedErrorBorder: _errorInputBorder(),
-    );
-  }
-
-  OutlineInputBorder _errorInputBorder() {
-    return OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.redAccent),
-        borderRadius: BorderRadius.circular(commonSmallGap));
-  }
-
-  OutlineInputBorder _activeInputBorder(Color color, double width) {
-    return OutlineInputBorder(
-        borderSide: BorderSide(color: color, width: width),
-        borderRadius: BorderRadius.circular(commonSmallGap));
+  ElevatedButton _submitButton(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const HomeScreen()));
+          }
+        },
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(commonSmallGap))),
+        child: const Text(
+          "Join",
+          style: TextStyle(color: Colors.white),
+        ));
   }
 }

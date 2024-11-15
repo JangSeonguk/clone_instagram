@@ -1,4 +1,3 @@
-import 'package:baby_stamp/screen/auth_screen.dart';
 import 'package:baby_stamp/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +13,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(colorSchemeSeed: Colors.white),
         debugShowCheckedModeBanner: false,
-        // home: const HomeScreen(),
-        home: const AuthScreen());
+        home: const HomeScreen());
   }
 }

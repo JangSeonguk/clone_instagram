@@ -1,3 +1,4 @@
+import 'package:baby_stamp/screen/camera_screen.dart';
 import 'package:baby_stamp/screen/feed_screen.dart';
 import 'package:baby_stamp/screen/profile_screen.dart';
 import 'package:baby_stamp/constants/screen_size.dart';
@@ -28,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       color: Colors.blueAccent,
     ),
     Container(
-      color: Colors.purpleAccent,
+      color: Colors.black,
     ),
     Container(
       color: Colors.grey,
@@ -57,8 +58,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onBtmItemClick(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    switch (index) {
+      case 2:
+        _openCamera();
+        break;
+      default:
+        {
+          setState(() {
+            _selectedIndex = index;
+          });
+        }
+    }
+  }
+
+  void _openCamera() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const CameraScreen()));
   }
 }

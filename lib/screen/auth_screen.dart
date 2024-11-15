@@ -23,9 +23,8 @@ class _AuthScreenState extends State<AuthScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             selectedForms == 0
-                ? const Text("Don't have an account?")
-                : const Text("Aleady have an account?"),
-            // const Text("Aleady have an acount?"),
+                ? const Text("Aleady have an account?")
+                : const Text("Don't have an account?"),
             TextButton(
               onPressed: () {
                 setState(() {
@@ -37,8 +36,8 @@ class _AuthScreenState extends State<AuthScreen> {
                 });
               },
               child: selectedForms == 0
-                  ? const Text("Sign Up")
-                  : const Text("Sign In"),
+                  ? const Text("Sign In")
+                  : const Text("Sign Up"),
             ),
           ],
         ),
