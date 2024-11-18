@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:baby_stamp/screen/camera_screen.dart';
 import 'package:baby_stamp/screen/feed_screen.dart';
 import 'package:baby_stamp/screen/profile_screen.dart';
@@ -23,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   int _selectedIndex = 0;
+  // final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   static final List<Widget> _screens = <Widget>[
     const FeedScreen(),
@@ -84,10 +86,18 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => const CameraScreen()));
     } else {
+      if (!mounted) return;
+
       SnackBar snackBar = SnackBar(
         content: const Text("사진, 파일, 마이크 접근 권한을 허용해주세요."),
-        action: SnackBarAction(label: "OK", onPressed: () {}),
+        action: SnackBarAction(
+            label: "OK",
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              AppSettings.openAppSettings();
+            }),
       );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
