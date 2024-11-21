@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // 권한이 허용되었고, 여전히 위젯이 유효한 경우 카메라 화면으로 이동
     if (isPermissionGranted && mounted) {
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const CameraScreen()));
+          .push(MaterialPageRoute(builder: (context) => CameraScreen()));
     } else {
       if (!mounted) return;
 
