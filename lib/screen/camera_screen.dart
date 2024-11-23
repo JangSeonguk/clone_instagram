@@ -1,5 +1,6 @@
 import 'package:baby_stamp/models/camera_state.dart';
 import 'package:baby_stamp/screen/profile_screen.dart';
+import 'package:baby_stamp/widget/my_gallery.dart';
 import 'package:baby_stamp/widget/take_photo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -67,9 +68,7 @@ class _CameraScreenState extends State<CameraScreen> {
           },
           controller: _pageController,
           children: [
-            Container(
-              color: Colors.amber,
-            ),
+            const MyGallery(),
             const TakePhoto(),
             Container(
               color: Colors.green,

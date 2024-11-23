@@ -1,5 +1,9 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:baby_stamp/constants/screen_size.dart';
 import 'package:baby_stamp/models/camera_state.dart';
+import 'package:baby_stamp/screen/share_post_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -38,7 +42,7 @@ class _TakePhotoState extends State<TakePhoto> {
             child: OutlinedButton(
               onPressed: () {
                 if (cameraState.isReadytoTakePhoto) {
-                  _attemptTakePhoto(cameraState);
+                  _attemptTakePhoto(cameraState, context);
                 }
               },
               style: OutlinedButton.styleFrom(
@@ -69,12 +73,22 @@ class _TakePhotoState extends State<TakePhoto> {
     );
   }
 
-  void _attemptTakePhoto(CameraState cameraState) async {
+  void _attemptTakePhoto(CameraState cameraState, BuildContext context) async {
     final String timeInMilli = DateTime.now().millisecondsSinceEpoch.toString();
     try {
       final path =
           join((await getTemporaryDirectory()).path, "$timeInMilli.png");
-      await cameraState.controller.takePicture();
+      final picture = await cameraState.controller.takePicture();
+      if (!mounted) return;
+
+      // 촬영된 사진을 원하는 경로로 복사
+      await File(picture.path).copy(path);
+
+      File imageFile = File(path);
+      if (context.mounted) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => SharePostScreen(imageFile: imageFile)));
+      }
     } catch (e) {}
   }
 }
