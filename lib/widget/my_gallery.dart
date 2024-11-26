@@ -13,30 +13,63 @@ class _MyGalleryState extends State<MyGallery> {
   bool _hasPermission = false;
   List<AssetEntity> assets = [];
 
-  Future<void> _fetchAssets() async {
-    assets = await PhotoManager.getAssetListRange(
-      start: 0,
-      end: 20,
-    );
-  }
+  final int _pageSize = 20;
+  bool _isLoading = false;
+  bool _hasMore = true;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _requestPermission();
-    _fetchAssets();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 100) {
+      _fetchAssets();
+    }
+  }
+
+  Future<void> _fetchAssets() async {
+    if (_isLoading || !_hasMore) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final fetchedAssets = await PhotoManager.getAssetListRange(
+      start: assets.length,
+      end: assets.length + _pageSize,
+    );
+
+    setState(() {
+      assets.addAll(fetchedAssets);
+      _isLoading = false;
+      _hasMore = fetchedAssets.length >= _pageSize;
+    });
   }
 
   Future<void> _requestPermission() async {
     final PermissionState permission =
         await PhotoManager.requestPermissionExtend();
-    setState(() {
-      _hasPermission = permission.isAuth;
-    });
-
-    // 권한이 거부된 경우
-    if (!permission.isAuth) {
-      // 사용자에게 권한이 필요한 이유를 설명
+    if (permission.isAuth) {
+      setState(() {
+        _hasPermission = true;
+      });
+      _fetchAssets();
+    } else {
+      // 권한 거부 시 처리
+      setState(() {
+        _hasPermission = false;
+      });
       if (mounted) {
         showDialog(
           context: context,
@@ -68,15 +101,33 @@ class _MyGalleryState extends State<MyGallery> {
       return const Center(
         child: Text('갤러리 접근 권한이 필요합니다'),
       );
+    } else {
+      return Stack(
+        children: [
+          GridView.builder(
+            controller: _scrollController,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            ),
+            itemBuilder: (_, index) {
+              if (index < assets.length) {
+                return AssetThumbnail(asset: assets[index]);
+              } else if (_hasMore) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return null;
+            },
+            itemCount: _hasMore ? assets.length + 1 : assets.length,
+          ),
+          if (_isLoading)
+            const Positioned(
+              bottom: 16,
+              left: 0,
+              right: 0,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+        ],
+      );
     }
-
-    return GridView.builder(
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-      itemBuilder: (_, index) {
-        return AssetThumbnail(asset: assets[index]);
-      },
-      itemCount: assets.length,
-    );
   }
 }

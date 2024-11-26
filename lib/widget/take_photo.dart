@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:baby_stamp/constants/screen_size.dart';
 import 'package:baby_stamp/models/camera_state.dart';
